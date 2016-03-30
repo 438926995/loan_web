@@ -1,2 +1,2 @@
 # loan_web
-springmvc
+springmvc + maven + mybatis
