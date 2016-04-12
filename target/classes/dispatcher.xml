@@ -17,6 +17,8 @@
     <mvc:resources location="/css/*" mapping="/css/**" />  
     <mvc:resources location="/js/*" mapping="/js/**" />  
     <mvc:resources location="/images/*" mapping="/images/**" />  
+    <mvc:resources location="/fonts/*" mapping="/fonts/**" />  
+    <mvc:resources location="/index.html" mapping="/index.html" />
       
     <!-- 添加注解驱动 -->  
     <mvc:annotation-driven />  
