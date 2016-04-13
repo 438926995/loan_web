@@ -145,6 +145,10 @@ h1 {
     background: url('../images/templatemo_banner_slide_03.jpg');
     background-size: cover;
 }
+.templatemo_banner_home_page {
+	background: url('../images/homepage.jpg');
+	background-size: cover;
+}
 .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
 /*about our organization*/
 #templatemo_about {

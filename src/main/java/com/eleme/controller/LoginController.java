@@ -1,27 +1,29 @@
 package com.eleme.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eleme.service.loan.ILoanService;
+
 @Controller
 public class LoginController {
-
+  
+  @Inject
+  private ILoanService loanService;
+  
   @RequestMapping(value="/login")
   public ModelAndView login() {
     ModelAndView mav = new ModelAndView("index");
-    List<String> list = new ArrayList<>();
-    list.add("aaaaa");
-    list.add("bbbb");
-    list.add("ccc");
-    list.add("ddd");
-    list.add("eee");
-    list.add("fff");
-    mav.addObject("list", list);
+    // 读取用户
+    // 读取人数
+    int number = loanService.getTotalNumber();
+    // 读取产品信息
+//    mav.addObject("list", list);
     mav.addObject("user", "wen");
+    mav.addObject("number", number);
     return mav;
   }
 

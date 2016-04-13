@@ -4,7 +4,7 @@ jQuery(function(){
     //main menu
     $("#templatemo_banner_menu ul").singlePageNav({offset: $('#templatemo_banner_menu').outerHeight()});
     //banner slide
-    $('.banner').unslider({fluid: true});
+//    $('.banner').unslider({fluid: true});
     $(window).on("load scroll resize", function(){
         banner_height = ($(document).width()/1920) * 760;
         $('.banner').height(banner_height);

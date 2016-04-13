@@ -27,7 +27,7 @@
 	<task:annotation-driven />
 	<!-- 仅扫描service、annotation、dao,@Service、@Repository -->
 	<context:component-scan
-		base-package="com.eleme.mapper" />
+		base-package="com.eleme.service" />
 
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
