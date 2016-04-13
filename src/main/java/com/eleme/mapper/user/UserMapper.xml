@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eleme.mapper.user.UserMapper">
+	<resultMap type="com.eleme.domain.user.MartUser" id="BaseResultMap">
+		<id column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="USER_PSWD" property="userPswd" jdbcType="VARCHAR" />
+		<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+		<result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="USER_SEX" property="userSex" jdbcType="INTEGER" />
+		<result column="USER_AGE" property="userAge" jdbcType="INTEGER" />
+		<result column="USER_SID" property="userSid" jdbcType="VARCHAR" />
+		<result column="USER_ADDR" property="userAddr" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectMartUserByUserName" resultMap="BaseResultMap">
+		select USER_ID, USER_NAME, USER_PSWD, REAL_NAME, MOBILE_PHONE,
+		USER_SEX, USER_AGE, USER_SID, USER_ADDR
+		from M_MART_USERS
+		where USER_NAME = #{userName}
+	</select>
+	
+	<insert id="insertMartUser">
+		insert into M_MART_USERS(USER_NAME, USER_PSWD, REAL_NAME, MOBILE_PHONE,
+		USER_SEX, USER_AGE, USER_SID, USER_ADDR)
+		values
+		(#{userName}, #{userPswd}, #{realName}, #{mobilePhone},
+		#{userSex}, #{userAge}, #{userSid}, #{userAddr})
+	</insert>
+</mapper>

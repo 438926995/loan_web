@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
   String path = request.getContextPath();
-  String basePath = request.getScheme() + "://" + request.getServerName() + ":"
-      + request.getServerPort() + path + "/";
+  Object user = session.getAttribute("user");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,6 +25,9 @@
 <link href="<%=path%>/css/camera.css" rel="stylesheet">
 <!-- Template  -->
 <link href="<%=path%>/css/templatemo_style.css" rel="stylesheet">
+<link href="<%=path%>/css/remodal.css" rel="stylesheet">
+<link href="<%=path%>/css/remodal-default-theme.css" rel="stylesheet">
+<link href="<%=path%>/css/bootstrap-theme.min.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -42,16 +45,18 @@
 	text-align: center;
 	background-color: rgba(142, 152, 160, .4);
 }
-.number{
-	dispaly:inline-block;
-	min-width:25%;
-	max-width:30%;
-	height:100%;
-	color:#fff;
+
+.number {
+	dispaly: inline-block;
+	min-width: 25%;
+	max-width: 30%;
+	height: 100%;
+	color: #fff;
 }
+
 .number span {
-	font-size:4em;
-	font-weight:100px;
+	font-size: 4em;
+	font-weight: 100px;
 }
 </style>
 </head>
@@ -91,7 +96,7 @@
 			<li><a href="#templatemo_timeline"><i
 					class="glyphicon glyphicon-calendar"></i> &nbsp; test</a></li>
 			<li><a href="#templatemo_contact"><i
-					class="glyphicon glyphicon-phone-alt"></i> &nbsp; 登录</a></li>
+					class="glyphicon glyphicon-phone-alt"></i> &nbsp; 登录1</a></li>
 		</ul>
 	</div>
 	<div class="container_wapper">
@@ -112,7 +117,7 @@
 						<li><a href="#templatemo_about">关于</a></li>
 						<li><a href="#templatemo_events">产品</a></li>
 						<li><a href="#templatemo_timeline">ss</a></li>
-						<li><a href="#templatemo_contact">登录</a></li>
+						<li><a href="javascript:void(0);" onclick="login()">登录</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-8 visible-xs">
@@ -244,80 +249,32 @@
 		<div class="container-fluid">
 			<h1>产品</h1>
 			<!-- 产品信息for 从数据库读 -->
-			<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0">
-				<div class="event_box_wap event_animate_left">
-					<div class="event_box_img">
-						<img src="images/templatemo_event_01.jpg" class="img-responsive"
-							alt="Web Design Trends" />
-					</div>
-					<div class="event_box_caption">
-						<h1>学生小贷</h1>
-						<p>
-							<span class="glyphicon glyphicon-map-marker"></span> 申请条件 &nbsp;&nbsp; <span
-								class="glyphicon glyphicon-time"></span> 4:00 PM to 8:00 PM
-						</p>
-						<p>2.必须是学生</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0">
-				<div class="event_box_wap event_animate_right">
-					<div class="event_box_img">
-						<img src="images/templatemo_event_02.jpg" class="img-responsive"
-							alt="Free Bootstrap Seminar" />
-					</div>
-					<div class="event_box_caption">
-						<h1>工薪贷</h1>
-						<p>
-							<span class="glyphicon glyphicon-map-marker"></span> Digital
-							Hall, Yangon, Myanmar &nbsp;&nbsp; <span
-								class="glyphicon glyphicon-time"></span> 10:30 AM to 3:30 PM
-						</p>
-						<p>Vestibulum dapibus dolor porttitor urna pretium euismod.
-							Aliquam lobortis enim at lacinia mollis. Curabitur eget sem eros.
-							Duis pulvinar rhoncus lectus, ac hendrerit enim pharetra et.</p>
+			<c:forEach items="${productList}" var="product" varStatus="id">
+				<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0">
+					<div class="event_box_wap event_animate_left">
+						<div class="event_box_img">
+							<img src="images/${product.imageUrl }" class="img-responsive"
+								alt="Web Design Trends" />
+						</div>
+						<div class="event_box_caption">
+							<h1>
+								<a href="<%=path %>/loan/apply/${product.fpId}">${product.fpName }</a>
+							</h1>
+							<p>
+								<span class="glyphicon glyphicon-map-marker"></span> 申请条件
+								&nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-up"></span>
+								<a href="<%=path %>/loan/apply/${product.fpId}"> 申请贷款</a>
+							</p>
+							<p>
+								<c:forEach items="${product.productRuleList}" var="rule"
+									varStatus="rlueIndex">
+									${rlueIndex.index + 1}.${rule.ruleContent }<br>
+								</c:forEach>
+							</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0">
-				<div class="event_box_wap event_animate_left">
-					<div class="event_box_img">
-						<img src="images/templatemo_event_03.jpg" class="img-responsive"
-							alt="" />
-					</div>
-					<div class="event_box_caption">
-						<h1>老板贷</h1>
-						<p>
-							<span class="glyphicon glyphicon-map-marker"></span> Old Town
-							Center, Mandalay, Myanmar &nbsp;&nbsp; <span
-								class="glyphicon glyphicon-time"></span> 3:30 PM to 6:30 PM
-						</p>
-						<p>Etiam ac ante gravida, pellentesque odio non, facilisis
-							dui. Suspendisse vestibulum justo quis sapien sodales, in
-							pellentesque erat congue.</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-0">
-				<div class="event_box_wap event_animate_right">
-					<div class="event_box_img">
-						<img src="images/templatemo_event_04.jpg" class="img-responsive"
-							alt="" />
-					</div>
-					<div class="event_box_caption">
-						<h1>租房贷</h1>
-						<p>
-							<span class="glyphicon glyphicon-map-marker"></span> New Hat,
-							Lashio, Myanmar &nbsp;&nbsp; <span
-								class="glyphicon glyphicon-time"></span> 2:15 PM to 5:15 PM
-						</p>
-						<p>Interdum et malesuada fames ac ante ipsum primis in
-							faucibus. Nunc rutrum urna eget augue placerat sodales. Mauris ut
-							dapibus nisi, eget fringilla lectus.</p>
-					</div>
-				</div>
-			</div>
+			</c:forEach>
 		</div>
 	</div>
 	<div id="templatemo_timeline" class="container_wapper">
@@ -427,76 +384,70 @@
 						Duis lacinia leo erat, eu tincidunt mauris congue ut. Ut auctor
 						turpis a sapien commodo, ac ultrices dui vehicula. Etiam in
 						tristique felis. Sed eleifend turpis sed purus venenatis
-						fringilla. <br>
-						<br> Vestibulum ante ipsum primis in faucibus orci luctus et
-						ultrices posuere cubilia Curae; Pellentesque habitant morbi
-						tristique senectus et netus et malesuada fames ac turpis egestas.
-						Suspendisse vel sollicitudin eros, vel vulputate leo.
+						fringilla. <br> <br> Vestibulum ante ipsum primis in
+						faucibus orci luctus et ultrices posuere cubilia Curae;
+						Pellentesque habitant morbi tristique senectus et netus et
+						malesuada fames ac turpis egestas. Suspendisse vel sollicitudin
+						eros, vel vulputate leo.
 					</p>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- 注册 -->
 	<div id="templatemo_contact" class="container_wapper">
 		<div class="container-fluid">
-			<h1>Contact</h1>
-			<div class="col-xs-12">
-				<div id="templatemo_contact_map"></div>
-			</div>
-			<div class="col-md-4">
-				<h2>Contact Info.</h2>
-				<p>Sed viverra nunc magna, quis placerat augue pellentesque
-					quis. Sed nec pellentesque dolor. Aenean in lectus enim. Phasellus
-					eu egestas libero. Vivamus ultrices ligula a dapibus lobortis.</p>
-				<br>
-				<p>
-					<strong>Email:</strong> info@company.com<br />
-					<strong>Phone:</strong> 010-020-0340<br />
-					<strong>Website:</strong> www.company.com<br />
-					<strong>Address:</strong> 123 Thamine Street, Digital Estate,
-					Yangon 10620, Myanmar
-				</p>
-				<ul class="list-inline social-link">
-					<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-					<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-					<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-					<li><a href="#"><i class="fa fa-youtube"></i></a></li>
-					<li><a href="#"><i class="fa fa-github"></i></a></li>
-				</ul>
-			</div>
-			<form action="#" method="post" class="col-md-8">
+			<h1>注册</h1>
+			<form action="<%=path %>/user/regist" method="post" class="col-md-8">
 				<div class="row">
-					<div class="col-md-12">
-						<h2>Send Enquiry</h2>
+					<div class="col-md-6">
+						<p>用户名</p>
+						<input type="text" name="userName" id="userName" placeholder="Your Name" />
 					</div>
 					<div class="col-md-6">
-						<p>Name</p>
-						<input type="text" name="name" id="name" placeholder="Your Name" />
+						<p>真实姓名</p>
+						<input type="text" name="realName" id="realName"
+							placeholder="Your Real Name" />
 					</div>
 					<div class="col-md-6">
-						<p>Email</p>
-						<input type="text" name="email" id="email"
-							placeholder="Your Email" />
+						<p>密码</p>
+						<input type="password" name="userPswd" id="userPswd" placeholder="Your Password" />
+					</div>
+					<div class="col-md-6">
+						<p>再次确认密码</p>
+						<input type="password" name="userPswd2" id="userPswd"
+							placeholder="Confirm Your Password Again" />
+					</div>
+					<div class="col-md-6">
+						<p>性别</p>
+						<input type="text" name="userSex" id="userSex" placeholder="Your Sex" />
+					</div>
+					<div class="col-md-6">
+						<p>手机号码</p>
+						<input type="text" name="mobilePhone" id="mobilePhone"
+							placeholder="Your MobilePhone" />
+					</div>
+					<div class="col-md-6">
+						<p>年龄</p>
+						<input type="text" name="userAge" id="userAge" placeholder="Your Age" />
+					</div>
+					<div class="col-md-6">
+						<p>身份证号码</p>
+						<input type="text" name="userSid" id="userSid"
+							placeholder="Your Identity Card" />
 					</div>
 					<div class="col-md-12">
-						<p>Subject</p>
-						<input type="text" name="subject" id="subject"
-							placeholder="Subject" />
-					</div>
-					<div class="col-md-12">
-						<p>Message</p>
-						<textarea name="message" id="message"
-							placeholder="Write your message here..."></textarea>
-					</div>
+                    <p>家庭地址</p>
+                    <textarea name="userAddr" id="userAddr"  placeholder="Write your address here..."></textarea>
+                </div>
 					<div class="col-xs-6 col-sm-3 col-md-offset-6">
-						<button type="submit">Send</button>
+						<button class="btn btn-success" type="submit">注册</button>
 					</div>
 					<div class="col-xs-6 col-sm-3">
-						<button type="reset">Reset</button>
+						<button class="btn btn-primary" type="reset">重填</button>
 					</div>
 				</div>
 			</form>
-		</div>
 	</div>
 	<div id="templatemo_footer">
 		<div>
@@ -507,12 +458,96 @@
 			</p>
 		</div>
 	</div>
+
+	<div class="remodal" data-remodal-id="messageBox" role="dialog"
+		aria-labelledby="messageTitle" aria-describedby="messageBody">
+		<button data-remodal-action="close" class="remodal-close"
+			aria-label="Close"></button>
+		<div>
+			<h2 id="messageTitle"></h2>
+			<p id="messageBody"></p>
+		</div>
+		<br>
+		<button onclick="userLogin();" class="remodal-cancel">登录</button>
+		<button data-remodal-action="cancel" onclick="register();" class="remodal-cancel">注册</button>
+		<button data-remodal-action="cancel" class="remodal-cancel">关闭</button>
+	</div>
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/jquery-ui.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/jquery.singlePageNav.min.js"></script>
 	<script src="<%=path%>/js/unslider.min.js"></script>
-
 	<script src="<%=path%>/js/templatemo_script.js"></script>
+	<script src="<%=path%>/js/template.js"></script>
+	<script src="<%=path%>/js/remodal.js"></script>
+
+	<script type="text/javascript">
+		function login() {
+			var messBody = template('loginPage', null);
+			alertMessageBox("", messBody);
+		}
+
+		function alertMessageBox(messTitle, messBody, callback) {
+			$("#messageTitle").html(messTitle);
+			$("#messageBody").html(messBody);
+			var messBox = $('[data-remodal-id=messageBox]').remodal();
+			messBox.open();
+			$(document).on('closed', '.remodal', function(e) {
+				if (typeof callback == "function") {
+					callback();
+				}
+			});
+		}
+		
+		function userLogin(){
+			var userName = $('#username').val();
+			var userPswd = $('#password').val();
+			if(userName == ''){
+				$('#nameLabel').removeClass('hidden');
+				return;
+			} else {
+				$('#nameLabel').addClass('hidden');
+			}
+			if(userPswd == ''){
+				$('#passwordLabel').removeClass('hidden');
+				return;
+			} else {
+				$('#passwordLabel').addClass('hidden');
+			}
+			$.ajax({
+				url: '<%=path %>/user/login',
+				type: 'post',
+				dataType: 'json',
+				data: {userName: userName,userPswd: userPswd},
+			})
+			.done(function() {
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+		}
+
+		function register (argument) {
+			 window.location.href="<%=path %>/index#templatemo_timeline";  
+		}
+	</script>
+
+	<script id="loginPage" type="text/html">
+	
+		<div class="input-group input-group-lg">
+  		<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-user" />用户名</span>
+  		<input id="username" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+  		<div id="nameLabel" style="color:red; display:table-caption" class="hidden">用户名不能为空</div>
+		</div>
+		<br>
+		<div class="input-group input-group-lg">
+  		<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-lock" />密&emsp;码</span>
+  		<input id="password" type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon1">
+  		<div id="passwordLabel" style="color:red; display:table-caption" class="hidden">密码不能为空</div>
+		</div>
+	
+	</script>
+
 </body>
 </html>

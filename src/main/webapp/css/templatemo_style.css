@@ -414,7 +414,7 @@ h1 {
     margin-top: 20px;
     margin-bottom: 20px;
     border: none;
-    background: #eaeaea;
+    /* background: #eaeaea; */
 }
 #templatemo_contact button:hover {
     background: #f4f4f4;

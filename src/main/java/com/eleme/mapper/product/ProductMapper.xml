@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eleme.mapper.product.ProductMapper">
+	<resultMap type="com.eleme.domain.product.MFinanceProduct" id="BaseResultMap">
+		<id column="FP_ID" property="fpId" jdbcType="INTEGER" />
+		<result column="FP_NAME" property="fpName" jdbcType="VARCHAR" />
+		<result column="MIN_LOAN_AMOUNT" property="minLoanAmount" jdbcType="INTEGER" />
+		<result column="MAX_LOAN_AMOUNT" property="maxLoanAmount" jdbcType="INTEGER" />
+		<result column="PAY_LIMIT" property="payLimit" jdbcType="VARCHAR" />
+		<result column="MIN_RAIT_RATIO" property="minRaitRatio" jdbcType="DOUBLE" />
+		<result column="MAX_RAIT_RATIO" property="maxRaitRatio" jdbcType="DOUBLE" />
+		<result column="IMAGE_URL" property="imageUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.eleme.domain.product.ProductRule" id="ProductRuleMap">
+		<id column="PR_ID" property="prId" jdbcType="INTEGER" />
+		<result column="FP_ID" property="fpId" jdbcType="INTEGER" />
+		<result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
+		<result column="RULE_CONTENT" property="ruleContent" jdbcType="VARCHAR" />
+		<result column="RULE_TYPE" property="ruleType" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="selectProductList" resultMap="BaseResultMap">
+		select FP_ID, FP_NAME, MIN_LOAN_AMOUNT, MAX_LOAN_AMOUNT,
+		PAY_LIMIT, MIN_RAIT_RATIO, MAX_RAIT_RATIO, IMAGE_URL
+		from M_FINANCE_PRODUCT
+		where PRODUCT_STATUS = 1 
+	</select>
+	
+	<select id="selectProductRuleByFpId" resultMap="ProductRuleMap">
+		select PR_ID, FP_ID, RULE_NAME, RULE_CONTENT, RULE_TYPE
+		from M_PRODUCT_RULE_DETAIL
+		where DEL_FLAG = 1
+		and FP_ID = #{fpId}
+	</select>
+</mapper>
