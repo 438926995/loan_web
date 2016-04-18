@@ -14,10 +14,5 @@
 			</dataSource>
 		</environment>
 	</environments>
-
-	<!-- 注册mapper -->
-	<mappers>
-		<mapper resource="com/eleme/mapper/TestMapper.xml" />
-	</mappers>
-
+	
 </configuration>

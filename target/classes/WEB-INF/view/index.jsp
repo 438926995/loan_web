@@ -4,6 +4,10 @@
 <%
   String path = request.getContextPath();
   Object user = session.getAttribute("user");
+  boolean isLogin = false;
+  if(user != null){
+  		isLogin = true;
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,6 +32,7 @@
 <link href="<%=path%>/css/remodal.css" rel="stylesheet">
 <link href="<%=path%>/css/remodal-default-theme.css" rel="stylesheet">
 <link href="<%=path%>/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="<%=path%>/css/parsley.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -58,17 +63,14 @@
 	font-size: 4em;
 	font-weight: 100px;
 }
+p label {
+	color: pink;
+}
 </style>
 </head>
 <body>
 	<div class="banner" id="templatemo_banner_slide">
 		<ul>
-			<!-- <li class="templatemo_banner_slide_01">
-            <div class="slide_caption">
-                <h1>hello111</h1>
-                <p>100,000人提交贷款申请</p>
-            </div>
-        </li> -->
 			<li class="templatemo_banner_slide_02">
 				<div class="stopwatch">
 					<div class="number">
@@ -76,12 +78,6 @@
 					</div>
 				</div>
 			</li>
-			<!-- <li class="templatemo_banner_slide_03">
-            <div class="slide_caption">
-                <h1>Mobile Ready</h1>
-                <p>Cras fermentum convallis elementum. Praesent sit amet auctor erat, vitae auctor dolor. Sed viverra nunc magna, quis placerat augue pellentesque quis. Sed nec pellentesque dolor. Aenean in lectus enim. Phasellus eu egestas libero. Vivamus ultrices ligula a dapibus lobortis.</p>
-            </div>
-        </li> -->
 		</ul>
 	</div>
 
@@ -116,8 +112,21 @@
 						<li><a href="#templatemo_banner_slide">主页</a></li>
 						<li><a href="#templatemo_about">关于</a></li>
 						<li><a href="#templatemo_events">产品</a></li>
-						<li><a href="#templatemo_timeline">ss</a></li>
-						<li><a href="javascript:void(0);" onclick="login()">登录</a></li>
+						<!-- <li><a href="#templatemo_timeline">ss</a></li> -->
+						<c:choose>
+							<c:when test="${user != null }">
+								<li><a href="#templatemo_events"><span class="glyphicon glyphicon-user" /></a></li>
+								<li><a href="javascript:void(0);" onclick="logout()"><span class="glyphicon glyphicon-off" /></a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="javascript:void(0);" onclick="login()">登录</a></li>
+								<li><a href="#templatemo_contact">注册</a></li>
+							</c:otherwise>
+						</c:choose>
+						<%-- <c:if test="${!isLogin }">
+							<li>欢迎: ${user}</li>
+						</c:if> --%>
+						<!-- <li><a href="javascript:void(0);" onclick="login()">登录</a></li> -->
 					</ul>
 				</div>
 				<div class="col-xs-8 visible-xs">
@@ -397,48 +406,45 @@
 	<!-- 注册 -->
 	<div id="templatemo_contact" class="container_wapper">
 		<div class="container-fluid">
-			<h1>注册</h1>
-			<form action="<%=path %>/user/regist" method="post" class="col-md-8">
+			<h1 style="margin-top:100px;">注册</h1>
+			<form id="regist-form" action="<%=path %>/user/regist" method="post" class="col-md-8" data-parsley-validate="">
 				<div class="row">
 					<div class="col-md-6">
-						<p>用户名</p>
-						<input type="text" name="userName" id="userName" placeholder="Your Name" />
+						<p>用户名&emsp;<label id="userNameError"></label></p>
+						<input type="text" name="userName" id="userName" placeholder="Your Name" required data-parsley-trigger="change" data-parsley-length="[6, 20]" data-parsley-errors-container="#userNameError" />
 					</div>
 					<div class="col-md-6">
-						<p>真实姓名</p>
-						<input type="text" name="realName" id="realName"
-							placeholder="Your Real Name" />
+						<p>真实姓名&emsp;<label id="realNameError"></label></p>
+						<input type="text" name="realName" id="realName" required data-parsley-errors-container="#realNameError"
+							placeholder="Your Real Name" data-parsley-trigger="change" data-parsley-length="[2, 10]" />
 					</div>
 					<div class="col-md-6">
-						<p>密码</p>
-						<input type="password" name="userPswd" id="userPswd" placeholder="Your Password" />
+						<p>密码&emsp;<label id="passwordError"></label></p>
+						<input type="password" name="userPswd" id="userPswd" placeholder="Your Password" required data-parsley-trigger="change" data-parsley-length="[6, 20]" data-parsley-errors-container="#passwordError"/>
 					</div>
 					<div class="col-md-6">
-						<p>再次确认密码</p>
-						<input type="password" name="userPswd2" id="userPswd"
-							placeholder="Confirm Your Password Again" />
+						<p>再次确认密码&emsp;<label id="password2Error"></label></p>
+						<input type="password" name="userPswd2" id="userPswd" placeholder="Confirm Your Password Again" data-parsley-trigger="change" data-parsley-length="[6, 20]" data-parsley-equalto="#userPswd" data-parsley-errors-container="#password2Error"/>
 					</div>
 					<div class="col-md-6">
-						<p>性别</p>
-						<input type="text" name="userSex" id="userSex" placeholder="Your Sex" />
+						<p>邮箱&emsp;<label id="emailError"></label></p>
+						<input type="email" name="email" placeholder="Your E-mail" required data-parsley-trigger="change" data-parsley-type="email" data-parsley-errors-container="#emailError">
 					</div>
 					<div class="col-md-6">
-						<p>手机号码</p>
-						<input type="text" name="mobilePhone" id="mobilePhone"
-							placeholder="Your MobilePhone" />
+						<p>手机号码&emsp;<label id="mobilePhoneError"></label></p>
+						<input type="text" name="mobilePhone" id="mobilePhone" data-parsley-trigger="change" data-parsley-pattern="^1[3|4|5|8][0-9]\d{4,8}$" placeholder="Your MobilePhone" data-parsley-errors-container="#mobilePhoneError"/>
 					</div>
 					<div class="col-md-6">
-						<p>年龄</p>
-						<input type="text" name="userAge" id="userAge" placeholder="Your Age" />
+						<p>年龄&emsp;<label id="userAgeError"></label></p>
+						<input type="number" name="userAge" id="userAge" data-parsley-trigger="change" placeholder="Your Age" required data-parsley-errors-container="#userAgeError" data-parsley-type="integer" data-parsley-max="100" data-parsley-min="0"/>
 					</div>
 					<div class="col-md-6">
-						<p>身份证号码</p>
-						<input type="text" name="userSid" id="userSid"
-							placeholder="Your Identity Card" />
+						<p>身份证号码&emsp;<label id="userSidError"></label></p>
+						<input type="text" name="userSid" id="userSid" data-parsley-trigger="change" data-parsley-pattern="(^\d{15}$)|(^\d{17}([0-9]|X)$)" placeholder="Your Identity Card"  data-parsley-errors-container="#userSidError"/>
 					</div>
 					<div class="col-md-12">
-                    <p>家庭地址</p>
-                    <textarea name="userAddr" id="userAddr"  placeholder="Write your address here..."></textarea>
+                    <p>家庭地址&emsp;<label id="userAddrError"></label></p>
+                    <textarea name="userAddr" id="userAddr"  placeholder="Write your address here..." required data-parsley-trigger="change" data-parsley-maxlength="2000" data-parsley-errors-container="#userAddrError"></textarea>
                 </div>
 					<div class="col-xs-6 col-sm-3 col-md-offset-6">
 						<button class="btn btn-success" type="submit">注册</button>
@@ -468,11 +474,11 @@
 			<p id="messageBody"></p>
 		</div>
 		<br>
-		<button onclick="userLogin();" class="remodal-cancel">登录</button>
-		<button data-remodal-action="cancel" onclick="register();" class="remodal-cancel">注册</button>
+		<button onclick="userLogin();" class="remodal-confirm">登录</button>
+		<!-- <button data-remodal-action="cancel" onclick="register();" class="remodal-overlay">注册</button> -->
 		<button data-remodal-action="cancel" class="remodal-cancel">关闭</button>
 	</div>
-	<script src="<%=path%>/js/jquery.min.js"></script>
+	<script src="<%=path%>/js/jquery.js"></script>
 	<script src="<%=path%>/js/jquery-ui.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/jquery.singlePageNav.min.js"></script>
@@ -480,6 +486,8 @@
 	<script src="<%=path%>/js/templatemo_script.js"></script>
 	<script src="<%=path%>/js/template.js"></script>
 	<script src="<%=path%>/js/remodal.js"></script>
+	<script src="<%=path%>/js/parsley/parsley.min.js"></script>
+	<script src="<%=path%>/js/parsley/i18n/zh_cn.js"></script>
 
 	<script type="text/javascript">
 		function login() {
@@ -520,17 +528,63 @@
 				dataType: 'json',
 				data: {userName: userName,userPswd: userPswd},
 			})
-			.done(function() {
-				console.log("success");
+			.done(function(data) {
+				console.log(data);
+				if(data.isSuccess){
+					window.location.href="<%=path %>/index";
+				} else {
+					$('#failLoginLabel').removeClass('hidden');
+				}
 			})
 			.fail(function() {
 				console.log("error");
 			})
 		}
-
-		function register (argument) {
-			 window.location.href="<%=path %>/index#templatemo_timeline";  
+		
+		
+		function register () {
+			 window.location.href="<%=path %>/index#templatemo_contact";  
 		}
+
+		function logout () {
+			 $.ajax({
+			 	url: '<%=path %>/user/logout',
+			 	type: 'post',
+			 	dataType: 'json',
+			 	data: {},
+			 })
+			 .done(function() {
+			 	window.location.reload();
+			 })
+			 .fail(function() {
+			 	window.location.reload();
+			 });
+			 
+		}
+
+		$(function () {
+			 $('#userName').blur(function() {
+			 	var userName = $('#userName').val();
+			 	$.ajax({
+			 		url: '<%=path %>/user/judgeUerNameSame',
+			 		type: 'POST',
+			 		dataType: 'json',
+			 		data: {userName: userName},
+			 	})
+			 	.done(function(data) {
+			 		if(data.isSuccess){
+			 			return;
+			 		} else {
+			 			alert("用户名已存在");
+			 			$('#userName').addClass('parsley-error');
+			 		}
+			 	})
+			 	.fail(function() {
+			 		console.log("error");
+			 	})
+			 });
+		})
+
 	</script>
 
 	<script id="loginPage" type="text/html">
@@ -539,11 +593,12 @@
   		<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-user" />用户名</span>
   		<input id="username" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
   		<div id="nameLabel" style="color:red; display:table-caption" class="hidden">用户名不能为空</div>
+  		<div id="failLoginLabel" style="color:red; display:table-caption" class="hidden">用户名或密码错误</div>
 		</div>
 		<br>
 		<div class="input-group input-group-lg">
   		<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-lock" />密&emsp;码</span>
-  		<input id="password" type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon1">
+  		<input id="password" type="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon1">
   		<div id="passwordLabel" style="color:red; display:table-caption" class="hidden">密码不能为空</div>
 		</div>
 	
