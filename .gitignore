@@ -1,2 +1,3 @@
 /target/
-target/classes/rebel.xml
+/**/rebel.xml
+/**/pom.properties
