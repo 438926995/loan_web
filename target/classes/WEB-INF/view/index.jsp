@@ -115,12 +115,12 @@ p label {
 						<!-- <li><a href="#templatemo_timeline">ss</a></li> -->
 						<c:choose>
 							<c:when test="${user != null }">
-								<li><a href="#templatemo_events"><span class="glyphicon glyphicon-user" /></a></li>
-								<li><a href="javascript:void(0);" onclick="logout()"><span class="glyphicon glyphicon-off" /></a></li>
+								<li><a href="#templatemo_events"><span class="glyphicon glyphicon-user" />&emsp;${user}</a></li>
+								<li><a href="javascript:void(0);" title="注销" onclick="logout()"><span class="glyphicon glyphicon-off" /></a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="javascript:void(0);" onclick="login()">登录</a></li>
 								<li><a href="#templatemo_contact">注册</a></li>
+								<li><a href="javascript:void(0);" onclick="login()">登录</a></li>
 							</c:otherwise>
 						</c:choose>
 						<%-- <c:if test="${!isLogin }">
