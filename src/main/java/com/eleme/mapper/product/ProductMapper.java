@@ -10,5 +10,7 @@ public interface ProductMapper {
   public List<MFinanceProduct> selectProductList();
   
   public List<ProductRule> selectProductRuleByFpId(Integer fpId);
+  
+  public MFinanceProduct getProductInfoByFpId(Integer fpId);
 
 }

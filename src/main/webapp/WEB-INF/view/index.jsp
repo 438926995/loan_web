@@ -267,12 +267,12 @@ p label {
 						</div>
 						<div class="event_box_caption">
 							<h1>
-								<a href="<%=path %>/loan/apply/${product.fpId}">${product.fpName }</a>
+								<a href="javascript:void(0)" onclick="appLoan('${product.fpId}')">${product.fpName }</a>
 							</h1>
 							<p>
 								<span class="glyphicon glyphicon-map-marker"></span> 申请条件
 								&nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-up"></span>
-								<a href="<%=path %>/loan/apply/${product.fpId}"> 申请贷款</a>
+								<a href="javascript:void(0)" onclick="appLoan('${product.fpId}')"> 申请贷款</a>
 							</p>
 							<p>
 								<c:forEach items="${product.productRuleList}" var="rule"
@@ -478,6 +478,31 @@ p label {
 		<!-- <button data-remodal-action="cancel" onclick="register();" class="remodal-overlay">注册</button> -->
 		<button data-remodal-action="cancel" class="remodal-cancel">关闭</button>
 	</div>
+	
+	<div class="loan-remodal" data-remodal-id="messageBoxApp" role="dialog"
+		aria-labelledby="messageTitleApp" aria-describedby="messageBodyApp" max-width="400">
+		<button data-remodal-action="close" class="remodal-close"
+			aria-label="Close"></button>
+		<div>
+			<h2 id="messageTitleApp"></h2>
+			<p id="messageBodyApp"></p>
+		</div>
+		<br>
+	</div>
+	
+	<#-- 消息提示弹层 -->
+    <div class="remodal" data-remodal-id="messageBoxNormal" role="dialog" aria-labelledby="messageTitleNormal"
+         aria-describedby="messageBodyNormal">
+        <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+        <div>
+            <h2 id="messageTitleNormal"></h2>
+            <div id="messageBodyNormal">
+            </div>
+        </div>
+        <br>
+        <button data-remodal-action="cancel" class="remodal-cancel">关闭</button>
+    </div>
+	
 	<script src="<%=path%>/js/jquery.js"></script>
 	<script src="<%=path%>/js/jquery-ui.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
@@ -490,6 +515,7 @@ p label {
 	<script src="<%=path%>/js/parsley/i18n/zh_cn.js"></script>
 
 	<script type="text/javascript">
+	/* <!-- 登录页面 --> */
 		function login() {
 			var messBody = template('loginPage', null);
 			alertMessageBox("", messBody);
@@ -507,6 +533,30 @@ p label {
 			});
 		}
 		
+		function appAlertMessageBox(messTitle, messBody, callback) {
+			$("#messageTitleApp").html(messTitle);
+			$("#messageBodyApp").html(messBody);
+			var messBox = $('[data-remodal-id=messageBoxApp]').remodal();
+			messBox.open();
+			$(document).on('closed', '.remodal', function(e) {
+				if (typeof callback == "function") {
+					callback();
+				}
+			});
+		}
+		
+		function normalAlertMessageBox(messTitle, messBody, callback) {
+			$("#messageTitleNormal").html(messTitle);
+			$("#messageBodyNormal").html(messBody);
+			var messBox = $('[data-remodal-id=messageBoxNormal]').remodal();
+			messBox.open();
+			$(document).on('closed', '.remodal', function(e) {
+				if (typeof callback == "function") {
+					callback();
+				}
+			});
+		}
+		/* <!-- 登录 --> */
 		function userLogin(){
 			var userName = $('#username').val();
 			var userPswd = $('#password').val();
@@ -541,11 +591,12 @@ p label {
 			})
 		}
 		
-		
+		/* <!-- 注册 --> */
 		function register () {
 			 window.location.href="<%=path %>/index#templatemo_contact";  
 		}
 
+		/* <!-- 退出 --> */
 		function logout () {
 			 $.ajax({
 			 	url: '<%=path %>/user/logout',
@@ -562,6 +613,7 @@ p label {
 			 
 		}
 
+		/* <!-- 注册判断用户是否唯一 --> */		
 		$(function () {
 			 $('#userName').blur(function() {
 			 	var userName = $('#userName').val();
@@ -585,10 +637,52 @@ p label {
 			 });
 		})
 
+		/* <!-- 贷款申请页面 --> */
+		function appLoan(fpId){
+			$.ajax({
+			   	type: "GET",
+			   	url: "<%=path %>/loan/getProductInfo/" + fpId,
+			   	data: {},
+			    dataType: "json",
+			   	success: function(resultObj){
+			   		var messBody = template('applyLoan', resultObj);
+			   		appAlertMessageBox("申请贷款", messBody);
+			   	},
+			   	error:function(resultObj){
+			   		normalAlertMessageBox("贷款申请","出现异常，请稍后重试！");
+			   	}
+			});
+		}
+		/* <!-- 贷款申请提交 --> */
+		function appLoanSave(){
+			var fpId = $("#fpId").val();
+			var loanAmount = $("#loanAmount").val();
+			$.ajax({
+			   	type: "POST",
+			   	url: "<%=path %>/loan/appLoan",
+			   	data: {
+			   			fpId : fpId,
+			   			loanAmount : loanAmount
+			   		},
+			    dataType: "json",
+			   	success: function(resultObj){
+			   		if(resultObj.isSuccess){
+			   			normalAlertMessageBox("申请贷款", resultObj.message, function(){
+			   				window.location.href = "<%=path %>/index";
+			   			});
+			   		} else {
+			   			normalAlertMessageBox("申请贷款", resultObj.failReason);
+			   		}
+			   	},
+			   	error:function(resultObj){
+			   		normalAlertMessageBox("贷款申请","出现异常，请稍后重试！");
+			   	}
+			});
+		}
+		
 	</script>
 
 	<script id="loginPage" type="text/html">
-	
 		<div class="input-group input-group-lg">
   		<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-user" />用户名</span>
   		<input id="username" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
@@ -601,7 +695,24 @@ p label {
   		<input id="password" type="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon1">
   		<div id="passwordLabel" style="color:red; display:table-caption" class="hidden">密码不能为空</div>
 		</div>
+	</script>
 	
+	<script id="applyLoan" type="text/html">
+		<ul class="list-group">
+  			<li class="list-group-item list-group-item-success">
+				利率:&emsp;{{minRaitRatio}}%/月</li>
+  			<li class="list-group-item list-group-item-info">
+				支持还款期限:&emsp;{{payLimit}}个月</li>
+  			<li class="list-group-item list-group-item-warning">
+				额度范围:&emsp;{{minLoanAmount}}元~{{maxLoanAmount}}元</li>
+  		</ul>
+		<form action="<%=path %>/loan/appLoan" method="post" class="navbar-form navbar-left" role="search">
+			<div class="form-group">
+    			<input type="number" name="loanAmount" id="loanAmount" class="form-control" placeholder="贷款金额" required>
+ 			</div>
+			<input type="hidden" name="fpId" id="fpId" value="{{fpId}}">
+  			<input type="button" style="margin-left:3em;" class="btn btn-success" value="申请" onclick="appLoanSave();">
+		<form>
 	</script>
 
 </body>

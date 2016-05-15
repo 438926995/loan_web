@@ -1,5 +1,7 @@
 package com.eleme.mapper.loan;
 
+import com.eleme.domain.loan.TApplyLoan;
+
 public interface LoanMapper {
 
   /**
@@ -8,5 +10,7 @@ public interface LoanMapper {
    * @return
    */
   public int selectAppLoanTotalNumber();
+  
+  public int insertIntoApplyLoan(TApplyLoan loan);
 
 }

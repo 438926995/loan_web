@@ -63,6 +63,20 @@
   background: #fff;
 }
 
+.loan-remodal{
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 30%;
+  margin-bottom: 10px;
+  padding: 35px;
+
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+
+  color: fuchsia;
+  background: #97FFFF;
+}
+
 .remodal.remodal-is-opening,
 .remodal.remodal-is-closing {
   -webkit-animation-fill-mode: forwards;

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.eleme.bean.JSONMessage;
 import com.eleme.bean.LoginBean;
 import com.eleme.domain.product.MFinanceProduct;
 import com.eleme.domain.user.MartUser;
@@ -115,7 +114,6 @@ public class LoginController {
   @RequestMapping(value = "/user/regist", method = RequestMethod.POST)
   public void regiset(HttpServletRequest request, HttpServletResponse response,
       MartUser martUser) throws IOException {
-    ModelAndView mav = new ModelAndView("/index");
     // 加密密码
     String encodePassword =
         md5PasswordEncoder.encodePassword(martUser.getUserName(), martUser.getUserPswd());
@@ -124,7 +122,7 @@ public class LoginController {
     userService.insertMartUser(martUser);
     // 用户信息加入session
     HttpSession session = request.getSession();
-    session.setAttribute("user", martUser.getUserName());
+    session.setAttribute("user", martUser);
     // 重定向到主页面
     response.sendRedirect("../index");
   }

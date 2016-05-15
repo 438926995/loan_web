@@ -7,4 +7,12 @@
 		from T_APPLY_LOAN
 		where DOC_STATUS = 0
 	</select>
+	
+	<insert id="insertIntoApplyLoan">
+		insert into T_APPLY_LOAN(FP_ID, LOAN_AMOUNT, USER_ID, SUBMIT_TIME,
+		APP_STATUS, DOC_NO)
+		values (#{fpId}, #{loanAmount}, #{userId}, #{submitTime},
+		#{appStatus}, #{docNo})
+	</insert>
+	
 </mapper>

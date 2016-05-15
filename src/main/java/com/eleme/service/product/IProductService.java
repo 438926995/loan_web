@@ -13,4 +13,6 @@ public interface IProductService {
   
   List<MFinanceProduct> getProductInfo();
   
+  MFinanceProduct getProductInfoByFpId(Integer fpId);
+  
 }

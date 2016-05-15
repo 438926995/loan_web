@@ -25,4 +25,9 @@ public class ProductServiceImpl implements IProductService {
     return productList;
   }
 
+  @Override
+  public MFinanceProduct getProductInfoByFpId(Integer fpId) {
+    return productMapper.getProductInfoByFpId(fpId);
+  }
+
 }

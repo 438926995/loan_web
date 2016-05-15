@@ -33,4 +33,11 @@
 		where DEL_FLAG = 1
 		and FP_ID = #{fpId}
 	</select>
+	
+	<select id="getProductInfoByFpId" resultMap="BaseResultMap">
+		select FP_ID, FP_NAME, MIN_LOAN_AMOUNT, MAX_LOAN_AMOUNT,
+		PAY_LIMIT, MIN_RAIT_RATIO, MAX_RAIT_RATIO, IMAGE_URL
+		from M_FINANCE_PRODUCT
+		where FP_ID = #{fpId}
+	</select>
 </mapper>
