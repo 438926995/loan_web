@@ -1,5 +1,7 @@
 package com.eleme.mapper.loan;
 
+import java.util.List;
+
 import com.eleme.domain.loan.TApplyLoan;
 
 public interface LoanMapper {
@@ -12,5 +14,9 @@ public interface LoanMapper {
   public int selectAppLoanTotalNumber();
   
   public int insertIntoApplyLoan(TApplyLoan loan);
+  
+  public TApplyLoan selectAppStatus(Integer userId);
+  
+  public List<TApplyLoan> selectApplyLoanByUserId(Integer userId); 
 
 }

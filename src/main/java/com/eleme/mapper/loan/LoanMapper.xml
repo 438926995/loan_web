@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.eleme.mapper.loan.LoanMapper">
 
+	<resultMap type="com.eleme.domain.loan.TApplyLoan" id="BaseResultMap">
+		<result column="SL_ID" property="slId" jdbcType="INTEGER" />
+		<result column="FP_ID" property="fpId" jdbcType="INTEGER" />
+		<result column="LOAN_AMOUNT" property="loanAmount" jdbcType="INTEGER" />
+		<result column="SUBMIT_TIME" property="submitTime" jdbcType="TIMESTAMP" />
+		<result column="APP_STATUS" property="appStatus" jdbcType="VARCHAR" />
+		<result column="DOC_NO" property="docNo" jdbcType="VARCHAR" />
+		<result column="APV_REMARK" property="apvRemark" jdbcType="VARCHAR" />
+		<result column="APV_TIME" property="apvTime" jdbcType="TIMESTAMP" />
+		<result column="FP_NAME" property="fpName" jdbcType="VARCHAR" />
+	</resultMap>
+
 	<select id="selectAppLoanTotalNumber" resultType="java.lang.Integer">
 		select count(*)
 		from T_APPLY_LOAN
@@ -14,5 +26,23 @@
 		values (#{fpId}, #{loanAmount}, #{userId}, #{submitTime},
 		#{appStatus}, #{docNo})
 	</insert>
+	
+	<select id="selectAppStatus" resultMap="BaseResultMap">
+		select APP_STATUS
+		from T_APPLY_LOAN
+		where USER_ID = #{userId} and DOC_STATUS = 0
+		order by CREATED_AT DESC
+		limit 1
+	</select>
+	
+	<select id="selectApplyLoanByUserId" resultMap="BaseResultMap">
+		select sl.SL_ID, sl.FP_ID, sl.LOAN_AMOUNT, sl.SUBMIT_TIME,
+		sl.APP_STATUS, sl.DOC_NO, sl.APV_REMARK, sl.APV_TIME,
+		fp.FP_NAME
+		from T_APPLY_LOAN sl left join M_FINANCE_PRODUCT fp
+		on sl.FP_ID = fp.FP_ID
+		where sl.DOC_STATUS = 0 and sl.USER_ID = #{userId}
+		order by SUBMIT_TIME desc
+	</select>
 	
 </mapper>

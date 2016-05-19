@@ -2,7 +2,7 @@ package com.eleme.service.loan.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,13 +26,26 @@ public class LoanServiceImpl implements ILoanService {
   @Override
   public int applyLoan(TApplyLoan loan) {
     loan.setAppStatus("P");
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
     Date date = new Date();
     String format = sdf.format(date);
-    int random = (int) Math.random() * 1000;
-    loan.setDocNo(format + random + loan.getUserId());
+    loan.setDocNo(format + loan.getUserId());
     loan.setSubmitTime(date);
     return loanMapper.insertIntoApplyLoan(loan);
+  }
+
+  @Override
+  public String getAppStatusByUserId(Integer userId) {
+    TApplyLoan al = loanMapper.selectAppStatus(userId);
+    if(al == null){
+      return "";
+    }
+    return al.getAppStatus();
+  }
+
+  @Override
+  public List<TApplyLoan> getApplyLoanInfoByUserId(Integer userId) {
+    return loanMapper.selectApplyLoanByUserId(userId);
   }
 
 }

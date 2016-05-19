@@ -122,7 +122,7 @@ public class LoginController {
     userService.insertMartUser(martUser);
     // 用户信息加入session
     HttpSession session = request.getSession();
-    session.setAttribute("user", martUser);
+    session.setAttribute("user", martUser.getUserName());
     // 重定向到主页面
     response.sendRedirect("../index");
   }

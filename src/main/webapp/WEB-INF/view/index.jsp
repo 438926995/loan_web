@@ -115,7 +115,7 @@ p label {
 						<!-- <li><a href="#templatemo_timeline">ss</a></li> -->
 						<c:choose>
 							<c:when test="${user != null }">
-								<li><a href="#templatemo_events"><span class="glyphicon glyphicon-user" />&emsp;${user}</a></li>
+								<li><a href="<%=path %>/user/center" title="个人中心"><span class="glyphicon glyphicon-user" />&emsp;${user}</a></li>
 								<li><a href="javascript:void(0);" title="注销" onclick="logout()"><span class="glyphicon glyphicon-off" /></a></li>
 							</c:when>
 							<c:otherwise>

@@ -63,6 +63,11 @@ public class LoanController {
       return new JSONMessage(false, "贷款前请先登录");
     }
     MartUser mUser = userService.getMartUserInfoByUserName(user.toString());
+    // 是否可以贷款判断 处于审核中不可贷款
+    String appStatus = loanService.getAppStatusByUserId(mUser.getUserId());
+    if("P".equals(appStatus)){
+      return new JSONMessage(false, "您的申请正在审核中, 不可再次提交申请");
+    }
     loan.setUserId(mUser.getUserId());
     int line = loanService.applyLoan(loan);
     if(line == 0){
