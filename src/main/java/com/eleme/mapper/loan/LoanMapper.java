@@ -17,6 +17,10 @@ public interface LoanMapper {
   
   public TApplyLoan selectAppStatus(Integer userId);
   
-  public List<TApplyLoan> selectApplyLoanByUserId(Integer userId); 
+  public List<TApplyLoan> selectApplyLoanByUserId(Integer userId);
+
+  public int updateApplyLoanToRevoke(Integer slId);
+
+  public TApplyLoan selectNewApplyLoan(Integer userId);
 
 }

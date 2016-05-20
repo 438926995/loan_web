@@ -48,4 +48,22 @@ public class LoanServiceImpl implements ILoanService {
     return loanMapper.selectApplyLoanByUserId(userId);
   }
 
+  @Override
+  public int revokeLoan(Integer slId) {
+    return loanMapper.updateApplyLoanToRevoke(slId);
+  }
+
+  @Override
+  public Integer judgeIfCanRevoke(Integer userId) {
+    TApplyLoan loan = loanMapper.selectNewApplyLoan(userId);
+    if(loan == null){
+      return null;
+    }
+    // 只有审核中可以撤单
+    if("P".equals(loan.getAppStatus())){
+      return loan.getSlId();
+    }
+    return null;
+  }
+
 }

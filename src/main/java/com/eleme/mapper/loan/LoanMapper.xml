@@ -44,5 +44,19 @@
 		where sl.DOC_STATUS = 0 and sl.USER_ID = #{userId}
 		order by SUBMIT_TIME desc
 	</select>
+
+	<update id="updateApplyLoanToRevoke">
+		UPDATE T_APPLY_LOAN SET APP_STATUS = 'R', APV_TIME = now(),
+		APV_USER_ID = -1, APV_REMARK = '已撤单'
+		WHERE SL_ID = #{slId}
+	</update>
+
+	<select id="selectNewApplyLoan" resultMap="BaseResultMap">
+		SELECT *
+		FROM T_APPLY_LOAN
+		WHERE USER_ID = #{userId}
+		order by SUBMIT_TIME desc
+		limit 1
+	</select>
 	
 </mapper>

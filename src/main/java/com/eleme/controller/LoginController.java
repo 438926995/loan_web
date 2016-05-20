@@ -43,16 +43,15 @@ public class LoginController {
    * @return
    */
   @RequestMapping(value = "/index", method = RequestMethod.GET)
-  public ModelAndView index() {
+  public ModelAndView index(Integer open) {
     ModelAndView mav = new ModelAndView("index");
-    // 读取用户 TODO
-
     // 读取人数
     int number = loanService.getTotalNumber();
     // 读取产品信息
     List<MFinanceProduct> productList = productService.getProductInfo();
     mav.addObject("productList", productList);
     mav.addObject("number", number);
+    mav.addObject("open", open);
     return mav;
   }
 

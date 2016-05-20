@@ -33,20 +33,29 @@
         <!-- 配置jsp路径前缀 -->  
         <property name="prefix" value="/WEB-INF/view/"></property>  
         <!-- 配置URl后缀 -->  
-        <property name="suffix" value=".jsp"></property>  
+        <property name="suffix" value=".jsp"></property>
     </bean> 
     
     <!-- annotation driven -->
-	<!-- <mvc:annotation-driven
+	 <mvc:annotation-driven
 		content-negotiation-manager="contentNegotiationManager" validator="validator">
 		<mvc:message-converters>
 			<ref bean="byteArrayHttpMessageConverter" />
 			<ref bean="stringHttpMessageConverter" />
 			<ref bean="mappingJacksonHttpMessageConverter" />
 		</mvc:message-converters>
-	</mvc:annotation-driven> -->
-	<!-- 配置内容协商功能 -->
-	<!-- <bean id="contentNegotiationManager"
+	</mvc:annotation-driven>
+    <!-- 设置spring mvc校验，以下 validator ConversionService 在使用 mvc:annotation-driven
+		会 自动注册 -->
+    <bean id="validator"
+          class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="messageSource" />
+    </bean>
+
+	 <!-- 配置内容协商功能 -->
+	 <bean id="contentNegotiationManager"
 		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 		<property name="favorPathExtension" value="false" />
 		<property name="favorParameter" value="false" />
@@ -59,9 +68,9 @@
 				*=*/*
 			</value>
 		</property>
-	</bean> -->
-	<!-- 配置不同的HttpMessageConverter，对http传入和传出的内容进行格式转换 -->
-	<!-- <bean id="byteArrayHttpMessageConverter"
+	</bean>
+	 <!-- 配置不同的HttpMessageConverter，对http传入和传出的内容进行格式转换 -->
+	 <bean id="byteArrayHttpMessageConverter"
 		class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 	<bean id="stringHttpMessageConverter"
 		class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -79,6 +88,6 @@
 				<value>application/json;charset=UTF-8</value>
 			</list>
 		</property>
-	</bean>  -->
+	</bean>
       
 </beans>  

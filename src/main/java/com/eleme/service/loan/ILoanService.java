@@ -14,4 +14,13 @@ public interface ILoanService {
   
   public List<TApplyLoan> getApplyLoanInfoByUserId(Integer userId);
 
+  public int revokeLoan(Integer slId);
+
+  /**
+   * 判断是否可以撤单,正常返回slId
+   * @param userId
+   * @return 返回null不能撤单
+   */
+  public Integer judgeIfCanRevoke(Integer userId);
+
 }

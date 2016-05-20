@@ -22,7 +22,7 @@ import com.eleme.service.user.IUserService;
 
 @Controller
 @RequestMapping(value="/loan")
-public class LoanController {
+public class LoanController extends BaseController {
   
   @Inject
   private IProductService productService;
@@ -74,6 +74,22 @@ public class LoanController {
       return new JSONMessage(false, "申请失败, 请重试");
     }
     return new JSONMessage(true, "恭喜您贷款成功!!!");
+  }
+
+  @RequestMapping(value="/revokeLoan", method = RequestMethod.POST)
+  @ResponseBody
+  public JSONMessage revokeLoan(HttpServletRequest request){
+    String userName = getUserName(request);
+    MartUser mu = userService.getMartUserInfoByUserName(userName);
+    Integer slId = loanService.judgeIfCanRevoke(mu.getUserId());
+    if(slId == null){
+      return new JSONMessage(false, "当前订单已处理, 不可撤单");
+    }
+    int line = loanService.revokeLoan(slId);
+    if(line > 0){
+      return new JSONMessage(true, "撤单成功");
+    }
+    return new JSONMessage(false, "撤销失败,请重试!");
   }
 
 }
