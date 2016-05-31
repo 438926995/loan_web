@@ -34,6 +34,7 @@
     <link href="<%=path%>/css/remodal-default-theme.css" rel="stylesheet">
     <link href="<%=path%>/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="<%=path%>/css/parsley.css" rel="stylesheet">
+    <link rel="shortcut icon" href="images/icons/animals_dragon_abstract_256px_543567_easyicon.net.png" type="image/x-icon" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

@@ -22,6 +22,7 @@
     <link href="<%=path%>/css/responsive-nav/responsive-nav.css" rel="stylesheet">
     <link href="<%=path%>/css/responsive-nav/styles.css" rel="stylesheet">
     <link href="<%=path%>/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="<%=path%>/images/icons/animals_dragon_abstract_256px_543567_easyicon.net.png" type="image/x-icon" />
     <style type="text/css">
         html {
             /*padding-right: 300px;*/
@@ -98,9 +99,13 @@
                 </c:if>
             </div>
             </c:if>
+            <c:if test="${empty nowProcess}">
+                <h2>还没有提交过贷款申请</h2>
+            </c:if>
         </div>
     </div><!-- panel-1 -->
 
+    <c:if test="${! empty nowProcess}">
     <div class="panel panel-default"><!-- panel-2 -->
         <div class="panel-heading">
             <label>贷款历史</label>
@@ -135,6 +140,7 @@
             </table>
         </div>
     </div><!-- panel-2 -->
+    </c:if>
     </span>
 
     <span id="userSpan">
@@ -405,6 +411,10 @@
 
     function saveFeedback() {
         var feedbackContent = $('#feedbackContent').val();
+        if($.trim(feedbackContent) == ''){
+            normalAlertMessageBox("意见反馈", "意见不能为空");
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "<%=path %>/user/saveUserFeedback",
